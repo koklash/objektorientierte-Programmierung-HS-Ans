@@ -7,49 +7,71 @@
     Aufgabe: Fülle die Lücken ___ aus.
 '''
 
+
 import os
 import cv2
 import numpy as np
 
-def uebung_laden():
+def uebung_laden_mit_feedback():
     pfad_zu_daten = "data"
-    alle_bilder = [] # X
-    alle_labels = [] # y
+    alle_bilder = [] 
+    alle_labels = [] 
+    
+    print(f"🚀 START: Suche nach Daten im Ordner '{pfad_zu_daten}'...")
     
     # 1. Liste alle Ordner auf
+    if not os.path.exists(pfad_zu_daten):
+        print(f"❌ FEHLER: Der Ordner '{pfad_zu_daten}' existiert nicht!")
+        return [], []
+        
     kategorien = os.listdir(pfad_zu_daten)
+    print(f"ℹ️  Gefundene Ordner (Kategorien): {kategorien}")
     
     for kat in kategorien:
+        print(f"\n📂 Öffne Ordner: '{kat}'")
+        
         # 2. Baue Pfad zum aktuellen Unterordner
         aktueller_ordner_pfad = os.path.join(pfad_zu_daten, kat)
         
-        # 3. Bestimme Label: Ist es ein Schuh (5, 7, 9)?
-        # Wenn ja label=0, sonst label=1
+        # 3. Bestimme Label
         ist_schuh_liste = ['5', '7', '9']
-        label = ___ if ___ in ___ else ___
+        label = 0 if kat in ist_schuh_liste else 1
         
-        # 4. Liste alle Bilder in diesem Unterordner
+        # FEEDBACK ZUR ENTSCHEIDUNG
+        text_entscheidung = "SCHUH (Label 0)" if label == 0 else "KEIN SCHUH (Label 1)"
+        print(f"   ➡ Analyse: Kategorie '{kat}' ist in {ist_schuh_liste}? -> {text_entscheidung}")
+        
+        # 4. Liste alle Bilder
         bild_namen = os.listdir(aktueller_ordner_pfad)
+        print(f"   Found {len(bild_namen)} Bilder in diesem Ordner.")
         
         for bild_name in bild_namen:
-            # 5. Baue vollen Pfad zum Bild
-            voller_pfad = os.path.join(___, ___)
+            # 5. Voller Pfad
+            voller_pfad = os.path.join(aktueller_ordner_pfad, bild_name)
             
-            # 6. Lade Bild
-            bild = cv2.imread(voller_pfad)
+            # 6. Lade Bild (Hier als Graustufen simuliert für die Klausur)
+            bild = cv2.imread(voller_pfad, 0) 
             
-            # 7. Speichere in Listen
-            if bild is not None: # Kleiner Sicherheitscheck
-                alle_bilder.append(___)
-                alle_labels.append(___)
-                
+            # 7. Speichere & Feedback
+            if bild is not None:
+                alle_bilder.append(bild)
+                alle_labels.append(label)
+                # Kleines Feedback pro Bild (Vorsicht bei 10.000 Bildern, aber gut zum Üben)
+                # print(f"      ✅ Bild '{bild_name}' geladen.") 
+            else:
+                print(f"      ⚠️ WARNUNG: Konnte '{bild_name}' nicht laden (beschädigt oder kein Bild).")
+    
+    print("\n🏁 FERTIG: Alle Ordner verarbeitet.")
     return alle_bilder, alle_labels
 
-# Testen
-X, y = uebung_laden()
+# --- TESTEN ---
+# Damit das hier läuft, muss der Ordner "data" existieren. 
+# Falls er nicht existiert, fangen wir das oben sauber ab.
+X, y = uebung_laden_mit_feedback()
 
-# Sanity Checks
-print(f"Anzahl Bilder: {len(X)}")
+# ZUSAMMENFASSUNG
+print("\n--- ZUSAMMENFASSUNG ---")
+print(f"Gesamtanzahl geladener Bilder: {len(X)}")
 if len(X) > 0:
-    print(f"Form des ersten Bildes: {X[0].shape}")
-    print(f"Label des ersten Bildes: {y[0]}")
+    print(f"Beispiel - Erstes Label ist: {y[0]}")
+    print(f"Beispiel - Erstes Bild Shape: {X[0].shape}")
