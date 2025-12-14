@@ -34,12 +34,6 @@ Schreibe Code, der:
             
 '''
 
-import os
-
-
-datein = os.listdir("data/7")
-for datei in datein:
-    print(datei)
 
 
 

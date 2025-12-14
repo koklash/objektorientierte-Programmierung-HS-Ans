@@ -65,20 +65,23 @@ Schreibe Code, der:
         
 '''
 
-import os, cv2
 
-x = []
-y = []
 
-pathName = "data/7"
-files = os.listdir(pathName)
-for file in files:
-    loadedFile = cv2.imread(os.path.join(pathName, file))
-    print (file)
-    print (loadedFile.shape)
-    x.append(loadedFile)
-    y.append(file)
-print(len(x))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 '''
